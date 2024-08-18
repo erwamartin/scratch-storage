@@ -82,9 +82,10 @@ class WebHelper extends Helper {
      * @param {AssetType} assetType - The type of asset to fetch.
      * @param {string} assetId - The ID of the asset to fetch: a project ID, MD5, etc.
      * @param {DataFormat} dataFormat - The file format / file extension of the asset to fetch: PNG, JPG, etc.
+     * @param {string} fileName - The filename of the asset
      * @return {Promise.<Asset>} A promise for the contents of the asset.
      */
-    load (assetType, assetId, dataFormat) {
+    load (assetType, assetId, dataFormat, fileName) {
 
         /** @type {Array.<{url:string, result:*}>} List of URLs attempted & errors encountered. */
         const errors = [];
@@ -92,7 +93,7 @@ class WebHelper extends Helper {
             .filter(store => store.types.indexOf(assetType.name) >= 0);
         
         // New empty asset but it doesn't have data yet
-        const asset = new Asset(assetType, assetId, dataFormat);
+        const asset = new Asset(assetType, assetId, dataFormat, null, null, fileName);
 
         let tool = this.assetTool;
         if (assetType.name === 'Project') {

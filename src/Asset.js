@@ -82,21 +82,25 @@ class Asset {
      * @param {DataFormat} [dataFormat] - The format of the data (WAV, PNG, etc.); required iff `data` is present.
      * @param {Buffer} [data] - The in-memory data for this asset; optional.
      * @param {bool} [generateId] - Whether to create id from an md5 hash of data
+     * * @param {string} filename - The filename of the asset
      */
-    constructor (assetType, assetId, dataFormat, data, generateId) {
+    constructor (assetType, assetId, dataFormat, data, generateId, fileName) {
         /** @type {AssetType} */
         this.assetType = assetType;
 
         /** @type {string} */
         this.assetId = assetId;
 
-        this.setData(data, dataFormat || assetType.runtimeFormat, generateId);
+        /** @type {string} */
+        this.filename = filename;
+
+        this.setData(data, dataFormat || assetType.runtimeFormat, generateId, fileName);
 
         /** @type {Asset[]} */
         this.dependencies = [];
     }
 
-    setData (data, dataFormat, generateId) {
+    setData (data, dataFormat, generateId, fileName) {
         if (data && !dataFormat) {
             throw new Error('Data provided without specifying its format');
         }
@@ -112,6 +116,8 @@ class Asset {
         // Mark as clean only if set is being called without generateId
         // If a new id is being generated, mark this asset as not clean
         this.clean = !generateId;
+
+        if (filename) this.fileName = fileName;
     }
 
     /**

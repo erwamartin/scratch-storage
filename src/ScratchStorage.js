@@ -119,11 +119,12 @@ class ScratchStorage {
      * @param {Buffer} data - The data for the cached asset.
      * @param {string} [id] - The id for the cached asset.
      * @param {bool} [generateId] - flag to set id to an md5 hash of data if `id` isn't supplied
+     * @param {string} [fileName] - The filename of the asset
      * @returns {Asset} generated Asset with `id` attribute set if not supplied
      */
-    createAsset (assetType, dataFormat, data, id, generateId) {
+    createAsset (assetType, dataFormat, data, id, generateId, fileName) {
         if (!dataFormat) throw new Error('Tried to create asset without a dataFormat');
-        return new _Asset(assetType, id, dataFormat, data, generateId);
+        return new _Asset(assetType, id, dataFormat, data, generateId, fileName);
     }
 
     /**
@@ -182,7 +183,7 @@ class ScratchStorage {
      *   If the promise is rejected, there was an error on at least one asset source. HTTP 404 does not count as an
      *   error here, but (for example) HTTP 403 does.
      */
-    load (assetType, assetId, dataFormat) {
+    load (assetType, assetId, dataFormat, fileName) {
         /** @type {Helper[]} */
         const helpers = this._helpers.map(x => x.helper);
         const errors = [];
@@ -198,7 +199,7 @@ class ScratchStorage {
             helper = helpers[helperIndex++];
 
             if (helper) {
-                const loading = helper.load(assetType, assetId, dataFormat);
+                const loading = helper.load(assetType, assetId, dataFormat, fileName);
                 if (loading === null) {
                     return tryNextHelper();
                 }
