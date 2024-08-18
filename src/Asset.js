@@ -82,7 +82,7 @@ class Asset {
      * @param {DataFormat} [dataFormat] - The format of the data (WAV, PNG, etc.); required iff `data` is present.
      * @param {Buffer} [data] - The in-memory data for this asset; optional.
      * @param {bool} [generateId] - Whether to create id from an md5 hash of data
-     * * @param {string} filename - The filename of the asset
+     * * @param {string} fileName - The filename of the asset
      */
     constructor (assetType, assetId, dataFormat, data, generateId, fileName) {
         /** @type {AssetType} */
@@ -92,7 +92,7 @@ class Asset {
         this.assetId = assetId;
 
         /** @type {string} */
-        this.filename = filename;
+        this.fileName = fileName;
 
         this.setData(data, dataFormat || assetType.runtimeFormat, generateId, fileName);
 
@@ -117,7 +117,7 @@ class Asset {
         // If a new id is being generated, mark this asset as not clean
         this.clean = !generateId;
 
-        if (filename) this.fileName = fileName;
+        if (fileName) this.fileName = fileName;
     }
 
     /**
