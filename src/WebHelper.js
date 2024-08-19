@@ -119,7 +119,7 @@ class WebHelper extends Helper {
                 return tool.get(reqConfig)
                     .then(body => {
                         if (body) {
-                            asset.setData(body, dataFormat);
+                            asset.setData(body, dataFormat, fileName);
                             return asset;
                         }
                         return tryNextSource();
@@ -144,8 +144,8 @@ class WebHelper extends Helper {
      * @param {?string} assetId - The ID of the asset to fetch: a project ID, MD5, etc.
      * @return {Promise.<object>} A promise for the response from the create or update request
      */
-    store (assetType, dataFormat, data, assetId) {
-        const asset = new Asset(assetType, assetId, dataFormat);
+    store (assetType, dataFormat, data, assetId, fileName) {
+        const asset = new Asset(assetType, assetId, dataFormat, null, null, fileName);
         // If we have an asset id, we should update, otherwise create to get an id
         const create = assetId === '' || assetId === null || typeof assetId === 'undefined';
 
